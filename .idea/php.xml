@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/server-sent-events/vendor/composer" />
+      <path value="$PROJECT_DIR$/server-sent-events/vendor/hhxsv5/php-sse" />
+    </include_path>
+  </component>
+</project>
