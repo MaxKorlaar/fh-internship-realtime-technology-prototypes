@@ -5,16 +5,24 @@ Stageproject van Max Korlaar
 De servers werken middels Docker-containers, zodat het niet nodig is om lokaal een webserver te installeren.
 
 ## Eisen
-Docker moet geïnstalleerd zijn op je computer.
+[Docker](https://www.docker.com/products/docker-desktop) moet geïnstalleerd zijn op je computer.
+
+Voor het installeren van Composer-pakketten, is [Composer](https://getcomposer.org/download/) vereist. Hiervoor is het nodig om PHP te hebben geïnstalleerd op je computer. Op Windows is dit het makkelijkst met een WAMP-server-installatie, of het gebruik van een virtuele Ubuntu machine binnen Windows. Instructies hiervoor zijn specifiek en afhankelijk van je eigen situatie.
 
 ## Server-Sent Events
 
 [Broncode](server-sent-events)
 
-Start dit prototype door de volgende commando's uit te voeren in je terminal, nadat je in de juiste map bent genavigeerd:
+Voordat het prototype werkt, moet er nog een Composer-pakket worden geïnstalleerd. Dit kan met het volgende commando in je terminal, nadat je naar de juiste map bent genavigeerd:
+
+```shell
+cd server-sent-events
+composer install
+```
+
+Start dit prototype vervolgens door het volgende commando uit te voeren, waarmee je Docker instrueërt om de virtuele machines te starten:
 
 ```bash
-cd server-sent-events
 docker-compose up -d
 ```
 
