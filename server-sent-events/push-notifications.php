@@ -5,6 +5,8 @@
     include './vendor/autoload.php';
     require_once 'includes/database.php';
 
+    session_start();
+
     use Hhxsv5\SSE\SSE;
     use Hhxsv5\SSE\Update;
 
@@ -30,6 +32,13 @@
 
         return $timestamp;
     }
+
+    if (!isset($_SESSION['user'])) {
+        header('Status', true, 403);
+        die();
+    }
+
+    session_write_close();
 
     (new SSE())->start(new Update(static function () use ($connection) {
         /** @var mysqli $connection */

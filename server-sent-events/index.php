@@ -1,6 +1,8 @@
 <?php
 // Set up database for this prototype
 
+session_start();
+
 require_once 'includes/database.php';
 
 $connection->query('CREATE TABLE IF NOT EXISTS notifications (
@@ -33,6 +35,15 @@ while ($row = $results->fetch_assoc()) {
 <body>
     <div class="content">
         <h1>Server-Sent Events Prototype</h1>
+        <div>
+            <?php
+                if (isset($_SESSION['user'])) {
+                    echo 'Je bent ingelogd. <a href="auth.php">Log uit</a>';
+                } else {
+                    echo 'Je bent niet ingelogd. <a href="auth.php">Log in</a>';
+                }
+            ?>
+        </div>
         <p>Demo-applicatie</p>
         <form id="new-form" action="create-notification.php" method="POST">
             <input type="text" name="title" value="Titel" placeholder="Titel">
