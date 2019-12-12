@@ -27,8 +27,9 @@ while ($row = $results->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Server-Sent Events Prototype</title>
+    <title>Pusher Prototype</title>
     <link rel="stylesheet" href="style/main.css">
+    <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
 </head>
 <body>
     <div class="content">
@@ -50,37 +51,36 @@ while ($row = $results->fetch_assoc()) {
         </div>
     </div>
     <script>
-        const source = new EventSource("push-notifications.php", {withCredentials: true});
-        source.addEventListener("new-notifications", function (event) {
 
-            for (let notification of JSON.parse(event.data)) {
-                console.log(notification);
-                let div      = document.createElement('div');
-                let h4       = document.createElement('h4');
-                h4.innerText = notification.title;
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
 
-                let p       = document.createElement('p');
-                p.innerText = notification.content;
-
-                let date       = document.createElement('small');
-                date.innerText = notification.created_at;
-
-                div.appendChild(h4);
-                div.appendChild(p);
-                div.appendChild(date);
-                div.classList.add('new');
-
-                document.getElementById('data').prepend(div);
-            }
-
-
-        }, false);
-
-        window.addEventListener('beforeunload', function () {
-            console.info('Verbinding met EventSource sluiten');
-            source.close();
-            console.info('Verbinding gesloten');
+        const pusher = new Pusher('f7b6150b2c3e9d04fd97', {
+            cluster:  'eu',
+            forceTLS: true
         });
+
+        const channel = pusher.subscribe('notifications');
+        channel.bind('new-notification', function (notification) {
+            let div      = document.createElement('div');
+            let h4       = document.createElement('h4');
+            h4.innerText = notification.title;
+
+            let p       = document.createElement('p');
+            p.innerText = notification.content;
+
+            let date       = document.createElement('small');
+            date.innerText = notification.created_at;
+
+            div.appendChild(h4);
+            div.appendChild(p);
+            div.appendChild(date);
+            div.classList.add('new');
+
+            document.getElementById('data').prepend(div);
+        });
+
+
         let button = document.getElementById('submit-button');
         document.getElementById('new-form').addEventListener('submit', function (event) {
             event.preventDefault();

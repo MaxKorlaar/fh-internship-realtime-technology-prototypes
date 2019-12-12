@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: prototype
+      MYSQL_USER: test
+      MYSQL_PASSWORD: password
+    ports:
+      - "9906:3306"
+  web:
+    build: .
+    depends_on:
+      - db
+    volumes:
+      - .:/var/www/html/
+    ports:
+      - "8100:80"
+    stdin_open: true
+    tty: true

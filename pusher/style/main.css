@@ -1,0 +1,57 @@
+body {
+    box-sizing: content-box;
+    font-family: sans-serif;
+}
+
+#data {
+    background: lightgray;
+    border: solid 1px black;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 15px;
+}
+
+input, textarea {
+    display: block;
+    max-width: 500px;
+    padding: 5px;
+    margin: 5px;
+    font-size: 16px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    transition: all .2s ease;
+    width: 100%;
+}
+
+.green {
+    background: forestgreen;
+    color: white;
+}
+
+#submit-button {
+    cursor: pointer;
+}
+
+#data div {
+    border: 1px solid cornflowerblue;
+    background: antiquewhite;
+    padding: 10px;
+}
+
+h4 {
+    margin: 0;
+}
+
+.new {
+    animation: flash 1s none;
+}
+
+@keyframes flash {
+    0% {
+        background: yellow;
+    }
+    100% {
+        background: antiquewhite;
+    }
+}
