@@ -11,5 +11,5 @@
     $connection = new mysqli($host, $username, $password, $database);
 
     if ($connection->connect_error) {
-        die('Er ging iets mis tijdens het opzetten van een databaseverbinding :(');
+        die('Er ging iets mis tijdens het opzetten van een databaseverbinding :( - Misschien is de database nog aan het starten?');
     }

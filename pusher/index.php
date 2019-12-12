@@ -35,13 +35,13 @@ while ($row = $results->fetch_assoc()) {
 </head>
 <body>
     <div class="content">
-        <h1>Server-Sent Events Prototype</h1>
+        <h1>Pusher Prototype</h1>
         <div>
             <?php
                 if (isset($_SESSION['user'])) {
                     echo 'Je bent ingelogd. <a href="auth.php">Log uit</a>';
                 } else {
-                    echo 'Je bent ingelogd. <a href="auth.php">Log in</a>';
+                    echo 'Je bent niet ingelogd. <a href="auth.php">Log in</a>';
                 }
             ?>
         </div>
