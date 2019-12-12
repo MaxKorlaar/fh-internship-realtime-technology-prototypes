@@ -31,7 +31,7 @@
             '916289',
             $options
         );
-        $pusher->trigger('notifications', 'new-notification', [
+        $pusher->trigger('private-notifications', 'new-notification', [
             'title'      => $title,
             'content'    => $content,
             'created_at' => date('Y-m-d H:i:s')

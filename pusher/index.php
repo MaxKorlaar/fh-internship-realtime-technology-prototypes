@@ -1,6 +1,8 @@
 <?php
 // Set up database for this prototype
 
+session_start();
+
 require_once 'includes/database.php';
 
 $connection->query('CREATE TABLE IF NOT EXISTS notifications (
@@ -34,6 +36,15 @@ while ($row = $results->fetch_assoc()) {
 <body>
     <div class="content">
         <h1>Server-Sent Events Prototype</h1>
+        <div>
+            <?php
+                if (isset($_SESSION['user'])) {
+                    echo 'Je bent ingelogd. <a href="auth.php">Log uit</a>';
+                } else {
+                    echo 'Je bent ingelogd. <a href="auth.php">Log in</a>';
+                }
+            ?>
+        </div>
         <p>Demo-applicatie</p>
         <form id="new-form" action="create-notification.php" method="POST">
             <input type="text" name="title" value="Titel" placeholder="Titel">
@@ -56,11 +67,16 @@ while ($row = $results->fetch_assoc()) {
         Pusher.logToConsole = true;
 
         const pusher = new Pusher('f7b6150b2c3e9d04fd97', {
-            cluster:  'eu',
-            forceTLS: true
+            cluster:      'eu',
+            forceTLS:     true,
+            authEndpoint: 'pusher-auth.php'
         });
 
-        const channel = pusher.subscribe('notifications');
+        const channel = pusher.subscribe('private-notifications');
+
+        channel.bind('pusher:subscription_error', function (status) {
+            alert('Authenticatie voor pusher private-channel gaf status ' + status + ', ben je wel ingelogd?');
+        });
         channel.bind('new-notification', function (notification) {
             let div      = document.createElement('div');
             let h4       = document.createElement('h4');
