@@ -51,3 +51,34 @@ Door nieuwe notificaties aan te maken middels het formulier, komen ze in de data
 
 #### Hoe het werkt
 Server-Side Events werkt door een HTTP-aanvraag naar de server te versturen vanuit JavaScript. Deze aanvraag wordt echter niet door de server gesloten en blijft zodanig openstaan tot zover dit nodig is. Terwijl de verbinding open staat, is het voor de server mogelijk om berichten te verzenden naar de browser, gescheiden door 2 witregels. Hierdoor is de implementatie op een PHP-server niet moeilijk en heb ik hier het pakket ['PHP SSE'](https://github.com/hhxsv5/php-sse) gebruikt, gevonden op GitHub.
+
+
+## Pusher
+
+[Broncode](pusher)
+
+Voordat het prototype werkt, moeten er nog Composer-pakketten worden geïnstalleerd. Dit kan met het volgende commando in je terminal, nadat je naar de juiste map bent genavigeerd:
+
+```shell
+cd pusher
+composer install
+```
+
+Start dit prototype vervolgens door het volgende commando uit te voeren, waarmee je Docker instrueërt om de virtuele machines te starten:
+
+```shell
+docker-compose up -d
+```
+
+De machines kunnen afgesloten worden met het volgende commando:
+
+```shell
+docker-compose down
+```
+
+Als alles goed is gestart, dan kan je het prototype nu in je browser benaderen door naar <http://localhost:8100> te gaan.
+
+Door nieuwe notificaties aan te maken middels het formulier, komen ze in de database met notificaties terecht. Ze zullen automatisch middels Server-Sent Events naar de browser gestuurd worden, en door JavaScript worden uitgelezen waardoor ze op de pagina belanden.
+
+#### Hoe het werkt
+Pusher is een externe dienst die het opzetten van een server met ondersteuning voor WebSockets uit handen neemt. WebSockets is een protocol om bilaterale communicatie tussen een browser (client) en een server op te zetten in realtime. Vanuit de PHP-server van dit project wordt naar Pusher een aantal gegevens verstuurd, die door Pusher automatisch naar de verbonden clients wordt doorgestuurd.

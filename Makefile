@@ -10,3 +10,8 @@ start_sse:
 stop_sse:
 	docker-compose -f server-sent-events/docker-compose.yml down
 
+start_mercure:
+	docker-compose -f mercure/docker-compose.yml up -d
+
+stop_mercure:
+	docker-compose -f mercure/docker-compose.yml down
