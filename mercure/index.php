@@ -34,37 +34,44 @@ while ($row = $results->fetch_assoc()) {
     <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
 </head>
 <body>
-    <div class="content">
-        <h1>Mercure Prototype</h1>
-        <div>
+<div class="content">
+    <h1>Mercure Prototype</h1>
+    <div class="status-bar">
+        <div class="page-name">Overzicht meldingen</div>
+        <div class="user">
             <?php
-                if (isset($_SESSION['user'])) {
-                    echo 'Je bent ingelogd. <a href="auth.php">Log uit</a>';
-                } else {
-                    echo 'Je bent niet ingelogd. <a href="auth.php">Log in</a>';
-                }
+            if (isset($_SESSION['user'])) {
+                echo "Hallo, {$_SESSION['user']['username']}. <a href=\"auth.php\">Log uit</a>";
+            } else {
+                echo 'Hallo, gast. <a href="auth.php">Log in</a>';
+            }
             ?>
         </div>
-        <p>Demo-applicatie</p>
-        <form id="new-form" action="create-notification.php" method="POST">
-            <input type="text" name="title" value="Titel" placeholder="Titel">
-            <textarea name="content" cols="30" rows="10">Inhoud</textarea>
-            <input id="submit-button" type="submit" value="Maak nieuwe melding">
-        </form>
-
-        <div id="data">
-            <?php foreach ($existingNotifications as $notification) { ?>
-                <div>
-                    <h4><?= $notification['title'] ?></h4>
-                    <p><?= $notification['content'] ?></p>
-                    <small><?= $notification['created_at'] ?></small>
-                </div>
-            <?php } ?>
-        </div>
     </div>
-    <script>
+    <form id="new-form" action="create-notification.php" method="POST">
+        <h2>Nieuwe notificatie</h2>
+        <label>Titel
+            <input type="text" name="title" value="" placeholder="Titel">
+        </label>
+        <label>Inhoud
+            <textarea name="content" cols="30" rows="10" placeholder="Inhoud"></textarea>
+        </label>
+        <input id="submit-button" type="submit" value="Maak nieuwe melding">
+    </form>
 
-        const eventSource     = new EventSource('http://localhost:8080/.well-known/mercure?topic=' + encodeURIComponent('http://localhost/notifications'), {withCredentials: true}); // { withCredentials: true } was missing from the Symfony docs
+    <div id="data">
+        <?php foreach ($existingNotifications as $notification) { ?>
+            <div>
+                <h4><?= $notification['title'] ?></h4>
+                <p><?= $notification['content'] ?></p>
+                <small><?= $notification['created_at'] ?></small>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+<script>
+
+    const eventSource     = new EventSource('http://localhost:8080/.well-known/mercure?topic=' + encodeURIComponent('http://localhost/notifications'), {withCredentials: true}); // { withCredentials: true } was missing from the Symfony docs
         eventSource.onmessage = event => {
             // Will be called every time an update is published by the server
             let notification = JSON.parse(event.data);
@@ -87,21 +94,21 @@ while ($row = $results->fetch_assoc()) {
             document.getElementById('data').prepend(div);
         };
 
-        let button = document.getElementById('submit-button');
-        document.getElementById('new-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            button.disabled = true;
-            fetch(this.action, {
-                method: this.method,
-                body:   new FormData(this)
-            }).then(function (response) {
-                button.classList.add('green');
-                button.disabled = false;
-                setTimeout(() => {
-                    button.classList.remove('green');
-                }, 500);
-            });
-        })
-    </script>
+    let button = document.getElementById('submit-button');
+    document.getElementById('new-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        button.disabled = true;
+        fetch(this.action, {
+            method: this.method,
+            body: new FormData(this)
+        }).then(function () {
+            button.classList.add('green');
+            button.disabled = false;
+            setTimeout(() => {
+                button.classList.remove('green');
+            }, 500);
+        });
+    })
+</script>
 </body>
 </html>
