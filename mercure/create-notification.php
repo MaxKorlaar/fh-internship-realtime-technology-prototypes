@@ -6,15 +6,10 @@
     require_once 'includes/database.php';
     require __DIR__ . '/vendor/autoload.php';
 
-    // change these values accordingly to your hub installation
-    define('HUB_URL', 'http://mercure/.well-known/mercure');
-    define('JWT', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6W10sInB1Ymxpc2giOlsibm90aWZpY2F0aW9ucyJdfX0.YRuVcyKuw7vxSOYVmutyBSiFbCw7Vflt36l7DNtQDlU');
 
     use Symfony\Component\Mercure\Jwt\StaticJwtProvider;
     use Symfony\Component\Mercure\Publisher;
     use Symfony\Component\Mercure\Update;
-
-    $publisher = new Publisher(HUB_URL, new StaticJwtProvider(JWT));
 
     if (!isset($_POST['title'], $_POST['content'])) {
         die('Missing variables');
@@ -27,6 +22,11 @@
     $statement->bind_param('ss', $title, $content);
 
     $result = $statement->execute();
+    
+    define('HUB_URL', 'http://mercure/.well-known/mercure');
+    define('JWT', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6W10sInB1Ymxpc2giOlsibm90aWZpY2F0aW9ucyJdfX0.YRuVcyKuw7vxSOYVmutyBSiFbCw7Vflt36l7DNtQDlU');
+
+    $publisher = new Publisher(HUB_URL, new StaticJwtProvider(JWT));
 
     try {
         $update = new Update('http://localhost/notifications', json_encode([
